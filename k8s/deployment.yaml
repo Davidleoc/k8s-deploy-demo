@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+  labels:
+    app: k8s-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: k8s-demo
+  template:
+    metadata:
+      labels:
+        app: k8s-demo
+    spec:
+      containers:
+      - name: k8s-demo
+        image: myuser/k8s-demo:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: WELCOME_MSG
+          valueFrom:
+            configMapKeyRef:
+              name: demo-config
+              key: welcome_msg
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
