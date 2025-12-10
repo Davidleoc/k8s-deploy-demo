@@ -1,9 +1,8 @@
-FROM python:3.11-slim
+FROM golang:1.20-alpine
 
 WORKDIR /app
+COPY . .
+RUN go build -o server
 
-COPY server.py /app/
-
-RUN pip install --no-cache-dir flask
-
-CMD ["python", "server.py"]
+EXPOSE 8080
+CMD ["./server"]
