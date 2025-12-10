@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: k8s-demo
-        image: myuser/k8s-demo:v1
+        image: davidl05/k8s-demo:v1
         ports:
         - containerPort: 8080
         env:
