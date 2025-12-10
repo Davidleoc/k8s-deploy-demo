@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: demo-service
 spec:
-  type: ClusterIP
   selector:
     app: k8s-demo
   ports:
   - port: 80
     targetPort: 8080
-    protocol: TCP
