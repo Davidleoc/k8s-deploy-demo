@@ -1,12 +1,12 @@
 # Código da aplicação exemplo
-from flask import Flask, jsonify
+from flask import Flask
 import os
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    return jsonify({"message": os.environ.get("WELCOME_MSG", "Hello from kind cluster!")})
+def home():
+    msg = os.getenv("WELCOME_MSG", "Hello from Kubernetes!")
+    return f"<h1>{msg}</h1>"
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+app.run(host="0.0.0.0", port=8080)
