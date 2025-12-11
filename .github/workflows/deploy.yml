@@ -1,0 +1,44 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main  # ou sua branch principal
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Pega o código do repositório
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Configura o Docker
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # Login no DockerHub
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # Build e push da imagem Docker
+    - name: Build and push Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/k8s-demo:v1 .
+        docker push ${{ secrets.DOCKER_USERNAME }}/k8s-demo:v1
+
+    # Deploy via SSH (atualiza o deployment no Kubernetes)
+    - name: Deploy to server via SSH
+      env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      run: |
+        sudo apt-get update && sudo apt-get install -y sshpass
+        sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "\
+          kubectl set image deployment/demo-deployment k8s-demo=${DOCKER_USERNAME}/k8s-demo:v1"
