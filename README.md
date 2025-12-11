@@ -12,7 +12,7 @@ Publicar a imagem no Docker Hub
 
 Atualizar o Deployment no Kubernetes automaticamente
 
-#### ✅ Solução: Self-Hosted Runner
+#### Solução: Self-Hosted Runner
 
 O Github Actions não acessa servidores em rede interna. Para permitir que o pipeline acesse o cluster, configurei um Self-Hosted GitHub Runner dentro do servidor Ubuntu 22.04 que contem um cluster kubernetes feito com kaind.
 Assim, ele consegue:
