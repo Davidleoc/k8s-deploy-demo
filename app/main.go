@@ -1,4 +1,3 @@
-# Código da aplicação exemplo
 package main
 
 import (
