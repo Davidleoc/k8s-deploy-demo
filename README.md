@@ -4,7 +4,7 @@ Este projeto demonstra um pipeline completo de CI/CD usando GitHub Actions, Dock
 
  ### O objetivo principal é automatizar todo o fluxo:
 
-Fazer build da aplicação
+Fazer build da aplicação (é nescessário rodar ./run.sh localmente no diretório ~/actions-runner)
 
 Criar a imagem Docker
 
