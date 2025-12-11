@@ -89,9 +89,9 @@ davidl05/k8s-demo:v1
 Eu utilizo um cluster Kubernetes local, rodando em servidores Linux dentro da minha rede interna.
 Esse cluster foi criado usando kind (Kubernetes in Docker), a ideia foi fazer um kluster minimo para validar conceitos.
 
-🖥️ Nodes
+#### 🖥️ Nodes
 
-Um node é um servidor (ou container, no caso do kind) que executa workloads do Kubernetes.
+💡 Um node é um servidor (ou container, no caso do kind) que executa workloads do Kubernetes.
 
 No meu ambiente atual, tenho:
 
