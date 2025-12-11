@@ -23,6 +23,7 @@ Assim, ele consegue:
 ✔ Atualizar o Deployment no cluster
 
 📍 Onde instalei o runner:
+
 /home/github/actions-runner
 
 📍 Permissões necessárias
@@ -30,7 +31,9 @@ Assim, ele consegue:
 Eu precisei copiar o kubeconfig para o usuário do runner:
 
 sudo mkdir -p /home/github/.kube
+
 sudo cp /root/.kube/config /home/github/.kube/config
+
 sudo chown -R github:github /home/github/.kube
 
 ### 🔧 Arquitetura do Projeto
