@@ -99,11 +99,11 @@ No meu ambiente atual, tenho:
 
 Nenhum node dedicado como worker (o próprio control-plane também executa os pods de aplicação)
 
-A saída real do comando:
+*A saída real do comando:*
 
 kubectl get nodes
 
-Mostra:
+*Mostra:*
 
 NAME                     STATUS   ROLES           AGE     VERSION
 k8s-demo-control-plane   Ready    control-plane   5h14m   v1.30.0
@@ -146,7 +146,7 @@ kube-system          kube-scheduler-k8s-demo-control-plane            1/1     Ru
 local-path-storage   local-path-provisioner-988d74bc-9q4p6            1/1     Running   2 (4h54m ago)   5h14m
 
 
-Informações importantes:
+### Informações importantes:
 
 ✔ 3 réplicas da minha aplicação (demo-deployment)
 ✔ Ingress NGINX funcionando corretamente
@@ -157,7 +157,7 @@ Informações importantes:
 
 A aplicação é descrita com manifestos YAML:
 
-deployment.yaml
+### deployment.yaml
 
 3 réplicas
 
@@ -165,11 +165,11 @@ imagem atualizada automaticamente pelo pipeline
 
 estratégia rolling update
 
-service.yaml
+### service.yaml
 
 Service do tipo ClusterIP para a aplicação
 
-ingress.yaml
+### ingress.yaml
 
 expõe a aplicação usando o ingress-nginx
 
@@ -177,30 +177,30 @@ permite acessar via URL interna
 
 ### 🌐 Como ocorre o deploy
 
-Eu faço um git push origin main
+- Eu faço um git push origin main
 
-O GitHub dispara o workflow
+- O GitHub dispara o workflow
 
-O self-hosted runner pega o código
+- O self-hosted runner pega o código
 
-Faz build da imagem Docker
+- Faz build da imagem Docker
 
-Envia para o Docker Hub
+- Envia para o Docker Hub
 
-Usa kubectl set image para atualizar o Deployment
+- Usa kubectl set image para atualizar o Deployment
 
-O Kubernetes inicia o update
+- O Kubernetes inicia o update
 
-As novas réplicas entram no ar sem downtime
+- As novas réplicas entram no ar sem downtime
 
 ### ✅ Resultado final
 
-CI/CD real funcionando
+- CI/CD real funcionando
 
-Deploy automático no meu cluster Kubernetes local
+- Deploy automático no meu cluster Kubernetes local
 
-Pipeline rodando via self-hosted runner
+- Pipeline rodando via self-hosted runner
 
-Atualização contínua da imagem Docker
+- Atualização contínua da imagem Docker
 
-update sem interrupção
+- update sem interrupção
