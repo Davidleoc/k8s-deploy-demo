@@ -64,7 +64,7 @@ k8s-deploy-demo/
 
     └── workflows/
 
-        └── deploy.yaml
+        └──  deploy.yaml
 
 ### 🐳 Docker
 
