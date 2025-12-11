@@ -84,8 +84,6 @@ davidl05/k8s-demo:v1
 
 ### ☸️ Kubernetes
 
-**☸️ Meu ambiente Kubernetes
-
 Eu utilizo um cluster Kubernetes local, rodando em servidores Linux dentro da minha rede interna.
 Esse cluster foi criado usando kind (Kubernetes in Docker), a ideia foi fazer um kluster minimo para validar conceitos.
 
@@ -103,7 +101,6 @@ A saída real do comando:
 
 kubectl get nodes
 
-
 Mostra:
 
 NAME                     STATUS   ROLES           AGE     VERSION
@@ -119,18 +116,31 @@ Aqui está a lista real dos pods que estão rodando no meu cluster:
 kubectl get pods -A
 
 NAMESPACE            NAME                                             READY   STATUS    RESTARTS        AGE
+
 default              demo-deployment-66c55f56c7-6n882                 1/1     Running   0               4h42m
+
 default              demo-deployment-66c55f56c7-f27hm                 1/1     Running   0               4h42m
+
 default              demo-deployment-66c55f56c7-tcfb4                 1/1     Running   0               4h43m
+
 ingress-nginx        ingress-nginx-controller-6775c6fd56-snwqn        1/1     Running   1 (4h55m ago)   5h13m
+
 kube-system          coredns-7db6d8ff4d-2xf6s                         1/1     Running   1 (4h55m ago)   5h14m
+
 kube-system          coredns-7db6d8ff4d-nkzsf                         1/1     Running   1 (4h55m ago)   5h14m
+
 kube-system          etcd-k8s-demo-control-plane                      1/1     Running   1 (4h55m ago)   5h14m
+
 kube-system          kindnet-b829w                                    1/1     Running   1 (4h55m ago)   5h14m
+
 kube-system          kube-apiserver-k8s-demo-control-plane            1/1     Running   1 (4h55m ago)   5h14m
+
 kube-system          kube-controller-manager-k8s-demo-control-plane   1/1     Running   1 (4h55m ago)   5h14m
+
 kube-system          kube-proxy-wzxjk                                 1/1     Running   1 (4h55m ago)   5h14m
+
 kube-system          kube-scheduler-k8s-demo-control-plane            1/1     Running   1 (4h55m ago)   5h14m
+
 local-path-storage   local-path-provisioner-988d74bc-9q4p6            1/1     Running   2 (4h54m ago)   5h14m
 
 
