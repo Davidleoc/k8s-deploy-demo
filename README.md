@@ -93,19 +93,20 @@ Esse cluster foi criado usando kind (Kubernetes in Docker), a ideia foi fazer um
 
 💡 Um node é um servidor (ou container, no caso do kind) que executa workloads do Kubernetes.
 
-No meu ambiente atual, tenho:
+### No meu ambiente atual, tenho:
 
 1 node atuando como control-plane
 
 Nenhum node dedicado como worker (o próprio control-plane também executa os pods de aplicação)
 
-*A saída real do comando:*
+### *A saída real do comando:*
 
 kubectl get nodes
 
-*Mostra:*
+### *Mostra:*
 
 NAME                     STATUS   ROLES           AGE     VERSION
+
 k8s-demo-control-plane   Ready    control-plane   5h14m   v1.30.0
 
 
@@ -113,7 +114,7 @@ Ou seja: tudo — API Server, Scheduler, Controller Manager e até minha aplica�
 
 ### 📦 Pods
 
-Aqui está a lista real dos pods que estão rodando no meu cluster:
+### Aqui está a lista real dos pods que estão rodando no meu cluster:
 
 kubectl get pods -A
 
