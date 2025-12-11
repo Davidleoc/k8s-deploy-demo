@@ -28,7 +28,7 @@ jobs:
     # Build e push da imagem Docker
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/k8s-demo:v1 .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/k8s-demo:v1 ./app
         docker push ${{ secrets.DOCKER_USERNAME }}/k8s-demo:v1
 
     # Deploy via SSH (atualiza o deployment no Kubernetes)
