@@ -69,12 +69,16 @@ k8s-deploy-demo/
 A imagem da aplicação é construída usando o Dockerfile dentro da pasta /app:
 
 FROM golang:1.20-alpine
-WORKDIR /app
-COPY . .
-RUN go build -o server
-EXPOSE 8080
-CMD ["./server"]
 
+WORKDIR /app
+
+COPY . .
+
+RUN go build -o server
+
+EXPOSE 8080
+
+CMD ["./server"]
 
 Eu faço push da imagem no meu Docker Hub com:
 
