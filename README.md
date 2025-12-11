@@ -39,21 +39,30 @@ sudo chown -R github:github /home/github/.kube
 ### 🔧 Arquitetura do Projeto
 
 k8s-deploy-demo/
-│
-├── app/
-│ ├── main.go
-│ └── Dockerfile
-│
-├── k8s/
-│ ├── deployment.yaml
-│ └── service.yaml
-│
-└── .github/
-└── workflows/
-└── deploy.yaml
 
-yaml
-Copiar código
+│
+
+├── app/
+
+│ ├── main.go
+
+│ └── Dockerfile
+
+│
+
+├── k8s/
+
+│ ├── deployment.yaml
+
+│ └── service.yaml
+
+│
+
+└── .github/
+
+└── workflows/
+
+└── deploy.yaml
 
 ### 🐳 Docker
 
