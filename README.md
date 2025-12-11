@@ -105,9 +105,9 @@ kubectl get nodes
 
 ### *Mostra:*
 
-NAME                     STATUS   ROLES           AGE     VERSION
+NAME                     STATUS    ROLES            AGE      VERSION
 
-k8s-demo-control-plane   Ready    control-plane   5h14m   v1.30.0
+k8s-demo-control-plane   Ready     control-plane    5h14m    v1.30.0
 
 
 Ou seja: tudo — API Server, Scheduler, Controller Manager e até minha aplicação — roda no mesmo nó.
