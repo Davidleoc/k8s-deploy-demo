@@ -1,0 +1,400 @@
+O objetivo:
+
+Criar uma aplicação containerizada, rodar em Kubernetes local (kind), expor via Ingress e automatizar build + deploy usando GitHub Actions com runner self-hosted dentro da rede interna.
+
+1️⃣ Criação do repositório
+
+Primeiro, foi criado um repositório no GitHub chamado:
+
+k8s-deploy-demo
+
+
+Esse repositório passou a ser:
+
+A fonte da verdade do projeto
+
+Onde ficam código, manifests Kubernetes e pipeline CI/CD
+
+2️⃣ Estrutura do repositório
+
+A estrutura final ficou assim:
+
+k8s-deploy-demo/
+│
+├── app/
+│   ├── main.go
+│   └── Dockerfile
+│
+├── k8s/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── ingress.yaml
+│   └── configmap.yaml
+│
+└── .github/
+    └── workflows/
+        └── deploy.yaml
+
+
+📌 Essa separação é fundamental:
+
+app/ → código e imagem Docker
+
+k8s/ → infraestrutura Kubernetes
+
+.github/ → automação CI/CD
+
+3️⃣ Criação da aplicação
+
+Foi criada uma aplicação simples em Go:
+
+Escuta na porta 8080
+
+Lê uma variável de ambiente WELCOME_MSG
+
+Retorna essa mensagem via HTTP
+
+👉 O objetivo não era a aplicação, mas sim aprender Kubernetes e deploy.
+
+4️⃣ Dockerfile
+
+Dentro de app/Dockerfile:
+
+FROM golang:1.20-alpine
+
+WORKDIR /app
+COPY . .
+
+RUN go build -o server
+
+EXPOSE 8080
+CMD ["./server"]
+
+O que acontece aqui:
+
+Usa uma imagem base com Go
+
+Copia o código
+
+Compila o binário
+
+Expõe a porta 8080
+
+Executa o servidor
+
+📌 Esse Dockerfile gera a imagem que o Kubernetes roda.
+
+5️⃣ Build da imagem local
+
+No servidor:
+
+docker build -t davidl05/k8s-demo:v1 ./app
+
+
+Isso criou a imagem:
+
+davidl05/k8s-demo:v1
+
+
+📌 Essa imagem depois foi usada:
+
+Pelo Kubernetes
+
+Pelo CI/CD
+
+Pelo Docker Hub
+
+6️⃣ Criação do cluster Kubernetes (kind)
+
+Foi criado um cluster Kubernetes local usando:
+
+kind create cluster --name k8s-demo
+
+
+Isso:
+
+Criou um node Kubernetes dentro de um container Docker
+
+Instalou todo o control-plane
+
+Gerou o kubeconfig
+
+7️⃣ Instalação do Ingress Controller
+
+O Kubernetes não expõe HTTP sozinho.
+
+Então foi instalado o Ingress NGINX:
+
+kubectl apply -f \
+https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+
+Isso criou:
+
+Namespace ingress-nginx
+
+Controller escutando portas 80 e 443
+
+8️⃣ ConfigMap
+
+Arquivo k8s/configmap.yaml:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  welcome_msg: "Olá do Kubernetes!"
+
+
+📌 Serve para:
+
+Separar configuração do código
+
+Injetar variáveis no container
+
+9️⃣ Deployment
+
+Arquivo k8s/deployment.yaml:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: k8s-demo
+  template:
+    metadata:
+      labels:
+        app: k8s-demo
+    spec:
+      containers:
+      - name: k8s-demo
+        image: davidl05/k8s-demo:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: WELCOME_MSG
+          valueFrom:
+            configMapKeyRef:
+              name: demo-config
+              key: welcome_msg
+
+
+📌 Isso diz ao Kubernetes:
+
+Quero 3 Pods
+
+Rodando essa imagem
+
+Com essa variável de ambiente
+
+🔟 Service
+
+Arquivo k8s/service.yaml:
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-service
+spec:
+  selector:
+    app: k8s-demo
+  ports:
+  - port: 80
+    targetPort: 8080
+
+
+📌 O Service:
+
+Cria um IP fixo interno
+
+Balanceia tráfego entre os Pods
+
+1️⃣1️⃣ Ingress
+
+Arquivo k8s/ingress.yaml:
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demo.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: demo-service
+            port:
+              number: 80
+
+
+📌 Isso conecta:
+
+HTTP → Ingress → Service → Pods
+
+1️⃣2️⃣ Aplicação dos manifests
+kubectl apply -f k8s/
+
+
+Depois disso:
+
+Pods ficaram Running
+
+Aplicação respondeu via navegador
+
+ PARTE 2 — CI/CD EXPLICADO EM PROFUNDIDADE
+
+Agora vem a parte mais importante.
+
+🎯 Objetivo do CI/CD
+
+Automatizar:
+
+Build da imagem Docker
+
+Push para Docker Hub
+
+Deploy automático no Kubernetes
+
+Tudo isso a cada push na branch main.
+
+1️⃣ Por que runner self-hosted?
+
+Seu servidor Kubernetes está:
+
+Em rede interna
+
+Não acessível pela internet
+
+📌 Por isso:
+
+Não é possível fazer deploy direto com runners do GitHub
+
+Solução:
+
+Criar um GitHub Actions Runner self-hosted rodando dentro da mesma máquina do cluster.
+
+2️⃣ Criação do runner
+
+Você:
+
+Baixou o runner oficial do GitHub
+
+Registrou ele no repositório
+
+Rodou como usuário github
+
+Esse runner:
+
+Executa os workflows
+
+Tem acesso ao Docker
+
+Tem acesso ao Kubernetes
+
+3️⃣ Secrets no GitHub
+
+Você criou os seguintes secrets:
+
+DOCKER_USERNAME
+DOCKER_PASSWORD
+SERVER_HOST
+SERVER_USER
+SERVER_PASSWORD
+
+
+📌 Eles são:
+
+Criptografados
+
+Não aparecem nos logs
+
+Usados pelo workflow
+
+4️⃣ Workflow do GitHub Actions
+
+Arquivo .github/workflows/deploy.yaml
+
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+
+📌 Toda vez que alguém dá git push na main, o pipeline roda.
+
+Job
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+
+📌 Diz:
+
+Execute no runner que eu instalei no meu servidor
+
+Checkout do código
+- uses: actions/checkout@v3
+
+
+Baixa o repositório para o runner.
+
+Login no Docker Hub
+- uses: docker/login-action@v2
+
+
+Autentica para poder fazer push da imagem.
+
+Build e push
+docker build -t user/k8s-demo:v1 ./app
+docker push user/k8s-demo:v1
+
+
+📌 Isso:
+
+Gera a imagem
+
+Publica no Docker Hub
+
+Deploy no Kubernetes
+kubectl set image deployment/demo-deployment \
+  k8s-demo=user/k8s-demo:v1
+
+
+📌 Isso faz:
+
+Atualiza a imagem do Deployment
+
+Kubernetes recria Pods automaticamente
+
+Zero downtime (rolling update)
+
+5️⃣ Por que o kubeconfig foi essencial?
+
+O runner usa:
+
+/root/.kube/config
+
+
+Sem isso:
+
+kubectl não sabe onde está o cluster
+
+Erro localhost:8080
+
+Você resolveu isso garantindo:
+
+Permissão correta
+
+Execução no usuário certo
