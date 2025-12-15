@@ -3,4 +3,6 @@ kind: ConfigMap
 metadata:
   name: demo-config
 data:
-  welcome_msg: "Olá do Kubernetes com Kind!"
+  welcome_msg: "Olá do Kubernetes com Kind!
+  CONECTADO COM SUCESSO!
+  "
