@@ -398,3 +398,21 @@ Você resolveu isso garantindo:
 Permissão correta
 
 Execução no usuário certo
+
+O acesso ao localhost:8080 só existe enquanto o comando abaixo está rodando:
+
+kubectl port-forward svc/demo-service 8080:80
+
+-- Como aplicar uma mudança feita na aplicação pelo repositório no servidor
+
+git pull origin main
+
+kubectl apply -f configmap.yaml
+
+kubectl get pods
+
+kubectl delete pod <nome-pod>  # Para recriar o Pod 
+
+
+
+
