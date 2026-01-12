@@ -1,6 +1,6 @@
 ## Docker + Kubernetes + Self-Hosted Runner
 
-Este projeto demonstra um pipeline completo de CI/CD usando GitHub Actions, Docker Hub e Kubernetes, com foco em ambientes de rede interna. Para a demonstração foi usado um projeto simples em Go 
+Este projeto demonstra um pipeline completo de CI/CD usando GitHub Actions, Docker Hub e Kubernetes, com foco em ambientes de rede interna. Para a demonstração foi usado um projeto simples em Go.
 
  ### O objetivo principal é automatizar todo o fluxo:
 
